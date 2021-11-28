@@ -2,10 +2,10 @@
 
 ## Prerequirements (for Linux - debian based):
 
-Install Ansible by using virtualenv (to not mess up python environments)
+Install Ansible by using virtualenv (to not mess up possible different python environments)
 1. Install sshpass, pip and virtualenv  
 - `sudo apt install -y sshpass python3-pip python3-venv`
-2. Create your virtual environment in this case I named it ansible
+2. Create your virtual environment, in this case I named it ansible
 - `virtualenv ansible`
 3. Activate your virtual environment
 - `source ansible/bin/activate`
@@ -14,16 +14,16 @@ Install Ansible by using virtualenv (to not mess up python environments)
 5. Check the version
 - `ansible --version`
 6. Clone this git repository 
-- `git@github.com:nieldejonghe/rpi.git`
+- `https://github.com/nieldejonghe/rpi-ansible.git'
 7. CD to the ansible directory 
-- `cd rpi/ansible`
+- `cd rpi-ansible`
 8. Install the requirements for ansible with ansible galaxy 
 - `ansible-galaxy collection install -r requirements.yml`
 9. Edit the config.yml file with the desired parameters and rename it to config.yml
 10. Now you can run the playbooks.
 
-## pi-setup playbook
-### Prerequirements
+## pi-setup playbook:
+### Prerequirements:
 
 1. Install the Raspberry Pi Imager on a computer with an SD Card available
 2. Download latest OS (In my case Bullseye 64bit) 
@@ -44,14 +44,16 @@ Or you can edit /etc/dhcpd.conf on the root (ext4) partition on your SD card
 - Run the playbook pi-setup, this will initialize the pi with the settings you configured and install docker and docker-compose.
 `ansible-playbook pi-setup.yml --ask-pass --diff`
 
-## pi-tig stack playbook
+## pi-tig stack playbook:
 ### Will setup a Telegraf, InfluxdDB and grafana stack on the raspberry pi that monitors it's own metrics
 - Run the playbook pi-tig-stack.yml, since we already ran the setup playbook the passwords is the one we set in the config.yml file previously
 `ansible-playbook pi-tig-stack.yml --ask-pass --diff`
 
 ### Troubleshooting tips: 
 
-- You can use `docker logs <containername>` to see the logs of a container
+- You can use `docker logs <containername>` to see the logs of a container.
+
+- Use `docker exec -it <containername> /bin/bash' to drop into the docker with a bash shell.
 
 - You can use `docker exec -it influxdb influx` to instantly drop into the influx cli in your influxdb container. After that you can authenticate with `auth` and use the credentials you configured in the config.xml file. Drop into the database with `use <dbname>` and show test if the db contains data with `select * from system limit 5`.
 
