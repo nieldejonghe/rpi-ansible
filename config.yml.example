@@ -1,0 +1,28 @@
+---
+# Raspberry initial setup configuration.
+
+init: "no" # flag to determine if it's the initial setup
+hostname: # enter desired rpi hostname
+timezone: # enter desired timezone "Europe/Brussels"
+interface: "eth0" # default will be eth0
+ipaddress: "192.168.1.100/24" # pick an ip in your subnet
+routers: "192.168.1.1" # default gw in your subnet 
+dns_servers: "192.168.1.1 8.8.8.8 8.8.4.4" # space separated
+
+# Telegraf, InfluxDB and Grafana configuration.
+
+# Grafana config
+GF_SECURITY_ADMIN_USER: "admin" # example
+GF_SECURITY_ADMIN_PASSWORD: "grafana" # example
+
+# Influxdb config 
+INFLUXDB_DB_NAME: "telegraf" # name for database that stores telegraf data
+INFLUXDB_RETENTION: "31d" # time to keep data, can be also specified as 4w for example
+INFLUXDB_ADMIN_USER: "influxdbadmin" # example
+INFLUXDB_ADMIN_PASSWORD: "influxdbpassword" # example
+
+# Telegraf config
+TELEGRAF_USER: "telegrafuser" # example
+TELEGRAF_PASSWORD: "telegrafpassword" # example
+
+

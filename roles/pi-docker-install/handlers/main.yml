@@ -1,0 +1,4 @@
+# roles/pi-docker-install/handlers/main.yml
+---
+- name: reset_connection
+  meta: reset_connection

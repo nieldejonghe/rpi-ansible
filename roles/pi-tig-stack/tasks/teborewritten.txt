@@ -1,0 +1,135 @@
+
+https://blog.anoff.io/2021-01-howto-grafana-on-raspi/
+
+
+
+
+mkdir -p $HOME/docker/grafana/data
+mkdir -p $HOME/docker/grafana/provisioning
+mkdir -p $HOME/docker/compose-files
+
+# Run the grafana container with your local user ID that already owns the dir
+# pi@alpha:~ $ id -u
+# 1000
+
+
+# $HOME/docker/compose-files/.env
+GF_SECURITY_ADMIN_USER=admin
+GF_SECURITY_ADMIN_PASSWORD=niel2486
+
+# grafana provisioning
+
+  117  mkdir dashboards
+  118  mkdir datasources
+  119  cd datasources/
+  120  vim default.yaml
+  121  cd ..
+  122  cd dashboards/
+  123  vim rpimonitoring.json
+  125  vim dashboards.yml
+
+
+pi@alpha:~/docker $ cat grafana/provisioning/datasources/default.yaml 
+apiVersion: 1
+
+datasources:
+  - name: InfluxDB
+    type: influxdb
+    url: http://localhost:8086
+    user: telegrafuser
+    database: telegraf
+    jsonData:
+      httpMode: GET
+    secureJsonData:
+      password: Telegr@f
+
+
+pi@alpha:~/docker $ cat grafana/provisioning/dashboards/dashboards.yml 
+apiVersion: 1
+
+providers:
+  - name: 'Default'
+    folder: ''
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: false
+    options:
+      path: /etc/grafana/provisioning
+      foldersFromFilesStructure: true
+
+in rpimonitoring.json put the JSON from the exported dashboard (later get ID by API call)
+
+
+# start the containers
+
+################################################################
+
+https://blog.anoff.io/2020-12-run-influx-on-raspi-docker-compose/
+
+
+mkdir -p $HOME/docker/influxdb/data
+mkdir -p $HOME/docker/influxdb/init
+mkdir -p $HOME/docker/compose-files
+
+touch $HOME/docker/influxdb/influxdb.conf
+touch $HOME/docker/influxdb/telegraf.conf
+
+
+
+Create the following script at $HOME/docker/influxdb/init/create-telegraf.iql.
+
+CREATE DATABASE telegraf
+CREATE USER telegrafuser WITH PASSWORD 'Telegr@f' 
+GRANT WRITE ON telegraf TO telegrafuser
+CREATE RETENTION POLICY "4Weeks" ON "telegraf" DURATION 4w REPLICATION 1 DEFAULT
+
+# $HOME/docker/compose-files/.env
+INFLUXDB_USERNAME=admin
+INFLUXDB_PASSWORD=niel2486
+
+###############################################################
+
+NEW DASHBOARD
+https://grafana.com/grafana/dashboards/13982
+
+
+telegraf
+
+http://oostens.me/projects/raspberrypiserver/system-monitoring/
+
+#################################################################
+
+cd $HOME/docker/compose-files
+docker-compose up -d
+
+# kill all containers 
+docker kill $(docker ps -q)
+
+# remove all containers
+docker rm $(docker ps -a -q)
+
+# remove all images 
+docker rmi $(docker images -q)
+
+# access docker container 
+docker exec -it influxdb influx
+
+# bash shell in container
+docker exec -it <container name> /bin/bash
+
+# docker read logs
+docker logs grafana
+
+# show influxdb logs
+docker exec -it <container name> /bin/bash
+influxd 
+
+# Delete entire setup
+docker-compose rm --stop --force # stop and delete all containers
+docker system prune --force
+sudo rm -rf $HOME/docker
+
+
+
+

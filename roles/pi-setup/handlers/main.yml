@@ -1,0 +1,9 @@
+
+# roles/pi-setup/handlers/main.yml
+---
+- name: reboot
+  command: shutdown -r +0 'Ansible Reboot triggered'
+  async: 0
+  poll: 0
+  ignore_errors: true
+  become: true

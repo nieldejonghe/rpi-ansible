@@ -1,0 +1,49 @@
+- name: Copy docker directory and static config files.
+  copy:
+    src: docker
+    dest: "/home/{{ansible_user}}"
+    owner: pi
+    group: pi
+    mode: 0644
+
+
+- name: Copy parameterized .env file.
+  ansible.builtin.template:
+    src: .env.j2
+    dest: "/home/{{ansible_user}}/docker/compose-files/.env"
+    owner: pi
+    group: pi
+    mode: 0644
+
+- name: Copy parameterized datasource file.
+  ansible.builtin.template:
+    src: datasource.default.j2
+    dest: "/home/{{ansible_user}}/docker/grafana/provisioning/datasources/default.yaml"
+    owner: pi
+    group: pi
+    mode: 0644
+
+- name: Copy parameterized influxdb init file.
+  ansible.builtin.template:
+    src: influxdb-init.iql.j2
+    dest: "/home/{{ansible_user}}/docker/influxdb/init/influxdb-init.iql"
+    owner: pi
+    group: pi
+    mode: 0644
+
+- name: Copy parameterized telegraf config file.
+  ansible.builtin.template:
+    src: telegraf.conf.j2
+    dest: "/home/{{ansible_user}}/docker/telegraf/telegraf.conf"
+    owner: pi
+    group: pi
+    mode: 0644
+
+- name: Run `docker-compose up`.
+  community.docker.docker_compose:
+    project_src: "/home/{{ansible_user}}/docker/compose-files"
+    build: no
+    state: present
+
+
+

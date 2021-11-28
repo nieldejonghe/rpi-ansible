@@ -1,0 +1,46 @@
+---
+- name: Set a hostname.
+  ansible.builtin.hostname:
+    name: "{{ hostname }}"
+
+- name: Update local host entry with new host name.
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    regexp: '^127\.0\.1\.1'
+    line: "127.0.1.1 {{ hostname }}"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: "Set timezone to {{ timezone }}."
+  community.general.timezone:
+    name: "{{ timezone }}"
+
+- name: Update cache.
+  apt: 
+    update_cache: yes
+
+- name: Install packages.
+  apt:
+    name: vim
+    state: present
+
+- name: Upgrade all packages.
+  apt: 
+    name: "*"
+    state: latest
+
+- name: Configure static IP in /etc/dhcpcd.conf and reboot.
+  lineinfile:
+    dest:  /etc/dhcpcd.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+  with_items:
+    - { regexp: "^interface eth[0-9]$", line: "interface {{ interface }}" }
+    - { regexp: "^static ip_address", line: "static ip_address={{ ipaddress }}" }
+    - { regexp: "^static routers", line: "static routers={{ routers }}" }
+    - { regexp: "^static domain_name_servers", line: "static domain_name_servers={{ dns_servers }}" }
+  notify: reboot
+
+

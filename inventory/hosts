@@ -1,0 +1,2 @@
+[rpi]
+alpha.local ansible_user=pi
