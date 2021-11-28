@@ -1,6 +1,6 @@
 # Raspberry Pi Setup, docker install and TIG stack installation
 
-## Prerequirements (for Linux - debian based):
+## Requirements (for Linux - debian based):
 
 Install Ansible by using virtualenv (to not mess up possible different python environments)
 1. Install sshpass, pip and virtualenv  
@@ -23,7 +23,7 @@ Install Ansible by using virtualenv (to not mess up possible different python en
 10. Now you can run the playbooks.
 
 ## pi-setup playbook:
-### Prerequirements:
+### Requirements:
 
 1. Install the Raspberry Pi Imager on a computer with an SD Card available
 2. Download latest OS (In my case Bullseye 64bit) 

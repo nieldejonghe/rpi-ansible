@@ -1,7 +1,7 @@
 ---
-# Raspberry initial setup configuration.
+# Raspberry Pi initial setup configuration.
 
-init: "no" # flag to determine if it's the initial setup
+init: "yes" # flag to determine if it's the initial setup
 hostname: # enter desired rpi hostname
 timezone: # enter desired timezone "Europe/Brussels"
 interface: "eth0" # default will be eth0
