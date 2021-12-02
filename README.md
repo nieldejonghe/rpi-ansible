@@ -23,6 +23,7 @@ Install Ansible by using virtualenv (to not mess up possible different python en
 10. Now you can run the playbooks.
 
 ## pi-setup playbook:
+### This playbook will initialize the pi with the settings you configured in the config.yml file and install docker and docker-compose with pip.
 ### Requirements:
 
 1. Install the Raspberry Pi Imager on a computer with an SD Card available
@@ -40,12 +41,15 @@ the RPI4 doesn't come with SSH enabled as standard, you can enabled SSH with:
 Now you can connect to the rpi with pi@raspberry.local (default hostname) 
 Or you can edit /etc/dhcpd.conf on the root (ext4) partition on your SD card
 
-### This playbook will initialize the pi with the settings you configured in the config.yml file and install docker and docker-compose with pip.
 - Run the playbook pi-setup, this will initialize the pi with the settings you configured and install docker and docker-compose.
 `ansible-playbook pi-setup.yml --ask-pass --diff`
 
 ## pi-tig stack playbook:
 ### Will setup a Telegraf, InfluxdDB and grafana stack on the raspberry pi that monitors it's own metrics
+### Requirements:
+
+- Docker and docker-compose are installed on the raspberry pi, you can do this manually or with the playbooks in the repository.
+
 - Run the playbook pi-tig-stack.yml, since we already ran the setup playbook the passwords is the one we set in the config.yml file previously
 `ansible-playbook pi-tig-stack.yml --ask-pass --diff`
 
