@@ -6,7 +6,6 @@
     group: pi
     mode: 0644
 
-
 - name: Copy parameterized .env file.
   ansible.builtin.template:
     src: .env.j2

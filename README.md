@@ -6,11 +6,11 @@ Install Ansible by using virtualenv (to not mess up possible different python en
 1. Install sshpass, pip and virtualenv  
 - `sudo apt install -y sshpass python3-pip python3-venv`
 2. Create your virtual environment, in this case I named it ansible
-- `virtualenv ansible`
+- `python3 -m venv ansible`
 3. Activate your virtual environment
 - `source ansible/bin/activate`
 4. Install ansible in your virtual environment
-- `pip install ansible`
+- `python3 -m pip install ansible`
 5. Check the version
 - `ansible --version`
 6. Clone this git repository 
@@ -45,13 +45,13 @@ Or you can edit /etc/dhcpd.conf on the root (ext4) partition on your SD card
 `ansible-playbook pi-setup.yml --ask-pass --diff`
 
 ## pi-tig stack playbook:
-### Will setup a Telegraf, InfluxdDB and grafana stack on the raspberry pi that monitors it's own metrics
+### Will setup a Telegraf, InfluxdDB, Pihole and grafana stack on the raspberry pi.
 ### Requirements:
 
 - Docker and docker-compose are installed on the raspberry pi, you can do this manually or with the playbooks in the repository.
 
 - Run the playbook pi-tig-stack.yml, since we already ran the setup playbook the passwords is the one we set in the config.yml file previously
-`ansible-playbook pi-tig-stack.yml --ask-pass --diff`
+`ansible-playbook pi-stack.yml --ask-pass --diff`
 
 ### Troubleshooting tips: 
 

@@ -33,6 +33,27 @@ services:
        HOST_SYS: /rootfs/sys
        HOST_HOSTNAME: # used to pass the the docker host hostname.
 
+# info: https://github.com/pi-hole/docker-pi-hole/
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      - "53:53/tcp" # dns traffic
+      - "53:53/udp" # dns traffic
+      - "80:80/tcp" # pihole webinterface
+    environment:
+      FTLCONF_REPLY_ADDR4: '192.168.1.100' # Pi LAN IP
+      FTLCONF_PRIVACYLEVEL: '1' # Show and store all domains as hidden
+      TZ: 'Europe/Brussels' # timezone to use
+      WEBPASSWORD: ${PIHOLE_ADMIN_PASSWORD} # sourced from .env.
+      PIHOLE_DNS_: '8.8.8.8;8.8.4.4' # sets dns servers
+      QUERY_LOGGING: 'false'
+      WEBTHEME: 'default-dark'
+    volumes:
+      - $HOME/docker/pihole/pihole/:/etc/pihole/
+      - $HOME/docker/pihole/dnsmasq.d/:/etc/dnsmasq.d/
+    restart: always
+
   grafana:
     image: grafana/grafana:latest
     container_name: grafana

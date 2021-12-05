@@ -25,4 +25,7 @@ INFLUXDB_ADMIN_PASSWORD: "influxdbpassword" # example
 TELEGRAF_USER: "telegrafuser" # example
 TELEGRAF_PASSWORD: "telegrafpassword" # example
 
+# Pihole config
+PIHOLE_ADMIN_PASSWORD: "piholepassword" # example 
+
 
